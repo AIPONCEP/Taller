@@ -2,17 +2,21 @@ package org.example.taller.controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import org.example.taller.model.Cliente;
 import org.example.taller.model.DBManager;
 import org.example.taller.model.LocalConnection;
 import org.example.taller.model.Persona;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,16 +63,17 @@ public class MainController implements Initializable {
         columNumCoches.setCellValueFactory(new PropertyValueFactory<Cliente, String>("numCoches"));
         columnTlf.setCellValueFactory(new PropertyValueFactory<Cliente,String>("tlfs"));
 
-   rellenarTabla();
+        rellenarTabla();
 
-
-
+        String datosMecanicos = DBManager.mostrarMecanicos();
+        actualizarListView(datosMecanicos);
     }
 
     public void mostrarC(MouseEvent mouseEvent) {
-        System.out.printf(DBManager.mostrarClientes());
+        rellenarTabla();
     }
     public void eliminarC(MouseEvent mouseEvent) {
+
     }
     public void mostrarM(MouseEvent mouseEvent) {
         String datosMecanicos = DBManager.mostrarMecanicos();
@@ -116,5 +121,14 @@ public class MainController implements Initializable {
     }
 
     public void addClientes(MouseEvent mouseEvent) {
+        try {
+            Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/org/example/taller/insertsView.fxml")));
+            Stage window = (Stage) tablaClientes.getScene().getWindow();
+            window.setTitle("");
+            window.setScene(scene);
+            window.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

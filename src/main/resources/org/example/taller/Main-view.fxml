@@ -14,8 +14,8 @@
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
                   <TableView fx:id="tablaClientes" layoutY="-3.0" prefHeight="496.0" prefWidth="750.0" />
-                  <Button layoutX="548.0" layoutY="511.0" mnemonicParsing="false" onMouseClicked="#mostrarC" text="Mostrar" />
-                  <Button layoutX="615.0" layoutY="511.0" mnemonicParsing="false" onMouseClicked="#eliminarC" text="Eliminar" />
+                  <Button layoutX="624.0" layoutY="511.0" mnemonicParsing="false" onMouseClicked="#mostrarC" text="Mostrar" />
+                  <Button layoutX="691.0" layoutY="511.0" mnemonicParsing="false" onMouseClicked="#eliminarC" text="Eliminar" />
                   <Button layoutY="511.0" mnemonicParsing="false" onMouseClicked="#addClientes" text="Añadir Clientes" />
                </children></AnchorPane>
       </content>
@@ -24,8 +24,8 @@
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="566.0" prefWidth="674.0">
                <children>
-                  <Button layoutX="548.0" layoutY="511.0" mnemonicParsing="false" onMouseClicked="#mostrarM" text="Mostrar" />
-                  <Button layoutX="615.0" layoutY="511.0" mnemonicParsing="false" onMouseClicked="#eliminarM" text="Eliminar" />
+                  <Button layoutX="624.0" layoutY="511.0" mnemonicParsing="false" onMouseClicked="#mostrarM" text="Mostrar" />
+                  <Button layoutX="691.0" layoutY="511.0" mnemonicParsing="false" onMouseClicked="#eliminarM" text="Eliminar" />
                   <ListView fx:id="listViewMecanico" layoutY="-2.0" prefHeight="491.0" prefWidth="750.0" />
                </children></AnchorPane>
       </content>

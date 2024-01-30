@@ -66,7 +66,7 @@ public class DBManager {
                     for (int i = 1; i <= columnCount; i++) {
                         String columnName = metaData.getColumnName(i);
                         Object value = resultado.getObject(columnName);
-                        row.append(columnName).append(":").append(value).append("¿");
+                        row.append(columnName).append(": ").append(value).append("¿");
                     }
                     result.append(row).append("\n");
                 }
