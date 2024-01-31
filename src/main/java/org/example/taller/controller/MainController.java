@@ -19,6 +19,7 @@ import org.example.taller.model.Persona;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -85,8 +86,11 @@ public class MainController implements Initializable {
         ObservableList<Cliente> listObs = FXCollections.observableArrayList();
         String[] separarxguion = DBManager.mostrarClientes().split("-");
         ArrayList<Cliente> listaDatosClientes = new ArrayList<>();
-        String nombre, tlfArray,calle,ciudad,cp;
+        String nombre, calle,ciudad,cp,tlf;
         Integer num,numeroCoches,id;
+
+        System.out.println(DBManager.mostrarClientes());
+
         for (int i = 0; i < separarxguion.length; i++) {
             if (!separarxguion[i].contains(":")) {
                 continue;
@@ -101,8 +105,8 @@ public class MainController implements Initializable {
                 ciudad=separarxguion[i+4].substring(separarxguion[i+4].indexOf(":") + 1);
                 cp=separarxguion[i+5].substring(separarxguion[i+5].indexOf(":") + 1);
                 numeroCoches = Integer.parseInt( separarxguion[i+6].substring(separarxguion[i+6].indexOf(":")+1));
-                tlfArray = separarxguion[i+7].substring(separarxguion[i+7].indexOf(":")+1);
-                listaDatosClientes.add(new Cliente(id,nombre,num,calle,ciudad,cp,numeroCoches,tlfArray));
+                tlf = separarxguion[i + 7].substring(separarxguion[i + 7].indexOf(":") + 1);
+                listaDatosClientes.add(new Cliente(id,nombre,num,calle,ciudad,cp,numeroCoches, tlf));
             }
         }
         for (Cliente e : listaDatosClientes) {

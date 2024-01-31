@@ -23,10 +23,16 @@ public class DBManager {
                     StringBuilder result = new StringBuilder();
                     while (resultado.next()) {
                         StringBuilder row = new StringBuilder();
+                        String valuetlfformat;
                         for (int i = 1; i <= columnCount; i++) {
                             String columnName = metaData.getColumnName(i);
                             Object value = resultado.getObject(columnName);
-                            row.append(columnName).append(":").append(value).append("-");
+                            if(columnName.contains("tlf")){
+                                valuetlfformat=  value.toString().substring(1,value.toString().length()-1);
+                                row.append(columnName).append(":").append(valuetlfformat).append("-");
+                            }else{
+                                row.append(columnName).append(":").append(value).append("-");
+                            }
                         }
                         result.append(row).append("\n");
                     }
