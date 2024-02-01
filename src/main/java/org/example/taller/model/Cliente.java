@@ -37,7 +37,7 @@ public class Cliente extends Persona {
     }
 
 
-    public String[] convertirString(String texto){
+    public static String[] convertirString(String texto){
         String[] vector;
         if(texto.contains(",")){
             vector= texto.split(",");

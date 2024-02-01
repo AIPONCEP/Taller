@@ -74,7 +74,8 @@ public class MainController implements Initializable {
         rellenarTabla();
     }
     public void eliminarC(MouseEvent mouseEvent) {
-
+        Cliente clienteSelec= (Cliente) tablaClientes.getSelectionModel().getSelectedItem();
+        DBManager.borrarClientePorId(Integer.parseInt(clienteSelec.getIdClient().toString()));
     }
     public void mostrarM(MouseEvent mouseEvent) {
         String datosMecanicos = DBManager.mostrarMecanicos();
@@ -127,6 +128,18 @@ public class MainController implements Initializable {
     public void addClientes(MouseEvent mouseEvent) {
         try {
             Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/org/example/taller/insertsView.fxml")));
+            Stage window = (Stage) tablaClientes.getScene().getWindow();
+            window.setTitle("");
+            window.setScene(scene);
+            window.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void upClientes(MouseEvent mouseEvent) {
+        try {
+            Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/org/example/taller/updateView.fxml")));
             Stage window = (Stage) tablaClientes.getScene().getWindow();
             window.setTitle("");
             window.setScene(scene);

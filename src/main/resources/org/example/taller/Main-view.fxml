@@ -17,6 +17,7 @@
                   <Button layoutX="624.0" layoutY="511.0" mnemonicParsing="false" onMouseClicked="#mostrarC" text="Mostrar" />
                   <Button layoutX="691.0" layoutY="511.0" mnemonicParsing="false" onMouseClicked="#eliminarC" text="Eliminar" />
                   <Button layoutY="511.0" mnemonicParsing="false" onMouseClicked="#addClientes" text="Añadir Clientes" />
+                  <Button layoutX="106.0" layoutY="511.0" mnemonicParsing="false" onMouseClicked="#upClientes" text="Actualizar Datos" />
                </children></AnchorPane>
       </content>
     </Tab>

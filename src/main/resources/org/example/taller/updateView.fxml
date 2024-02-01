@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="503.0" prefWidth="678.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.taller.controller.updateDatosController">
+   <children>
+      <TextField fx:id="tFnombre" layoutX="290.0" layoutY="93.0" promptText="Nombre" style="-fx-border-color: black;">
+         <font>
+            <Font name="Calibri" size="18.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="tFnumc" layoutX="290.0" layoutY="130.0" promptText="Nº Coches" style="-fx-border-color: black;">
+         <font>
+            <Font name="Calibri" size="18.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="tFtlf" layoutX="290.0" layoutY="168.0" promptText="Teléfono" style="-fx-border-color: black;">
+         <font>
+            <Font name="Calibri" size="18.0" />
+         </font>
+      </TextField>
+      <Text layoutX="290.0" layoutY="229.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dirección:">
+         <font>
+            <Font name="Calibri" size="18.0" />
+         </font>
+      </Text>
+      <TextField fx:id="tfnumDirec" layoutX="290.0" layoutY="247.0" promptText="Número" style="-fx-border-color: black;">
+         <font>
+            <Font name="Calibri" size="18.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="tFcalle" layoutX="290.0" layoutY="284.0" promptText="Calle" style="-fx-border-color: black;">
+         <font>
+            <Font name="Calibri" size="18.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="tFciudad" layoutX="290.0" layoutY="322.0" promptText="Ciudad" style="-fx-border-color: black;">
+         <font>
+            <Font name="Calibri" size="18.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="tFcp" layoutX="290.0" layoutY="362.0" promptText="Código Postal" style="-fx-border-color: black;">
+         <font>
+            <Font name="Calibri" size="18.0" />
+         </font>
+      </TextField>
+      <Label layoutX="27.0" layoutY="23.0" text="Actualizar Datos Cliente">
+         <font>
+            <Font name="Calibri Bold" size="18.0" />
+         </font>
+      </Label>
+      <Button layoutX="27.0" layoutY="455.0" mnemonicParsing="false" onMouseClicked="#volver" text="Volver">
+         <font>
+            <Font name="Calibri" size="18.0" />
+         </font>
+      </Button>
+      <TextField fx:id="tFId" layoutX="27.0" layoutY="93.0" promptText="Id" style="-fx-border-color: black;">
+         <font>
+            <Font name="Calibri" size="18.0" />
+         </font>
+      </TextField>
+      <ImageView fitHeight="36.0" fitWidth="58.0" layoutX="521.0" layoutY="93.0" onMouseClicked="#upNombre" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Iconos/actualizado.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="36.0" fitWidth="55.0" layoutX="521.0" layoutY="130.0" onMouseClicked="#upNumCoches" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Iconos/actualizado.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="36.0" fitWidth="55.0" layoutX="521.0" layoutY="168.0" onMouseClicked="#upTlf" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Iconos/actualizado.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="36.0" fitWidth="55.0" layoutX="521.0" layoutY="247.0" onMouseClicked="#upNumCasa" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Iconos/actualizado.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="36.0" fitWidth="55.0" layoutX="521.0" layoutY="284.0" onMouseClicked="#upCalle" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Iconos/actualizado.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="36.0" fitWidth="55.0" layoutX="521.0" layoutY="322.0" onMouseClicked="#upCiudad" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Iconos/actualizado.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="36.0" fitWidth="55.0" layoutX="521.0" layoutY="362.0" onMouseClicked="#upCP" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Iconos/actualizado.png" />
+         </image>
+      </ImageView>
+   </children>
+</Pane>

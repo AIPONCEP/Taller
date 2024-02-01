@@ -99,15 +99,69 @@ public class DBManager {
             sentencia.setString(4, cliente.getCiudad());
             sentencia.setString(5, cliente.getCp());
             sentencia.setInt(6, cliente.getNumCoches());
-            sentencia.setArray(7, con.createArrayOf("VARCHAR", cliente.convertirString(tlfs)));
+            sentencia.setArray(7, con.createArrayOf("VARCHAR", Cliente.convertirString(tlfs)));
 
             int filasAfectadas = sentencia.executeUpdate();
             System.out.println("Filas afectadas: " + filasAfectadas);
+            LocalConnection.closeConnection();
+            sentencia.close();
             return true;
-
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
             return false;
         }
     }
+
+    public static boolean actualizarClientePorId(int idCliente, String columNameUpdate, String dato) {
+        try (Connection con = LocalConnection.getConnection();
+             PreparedStatement sentencia = con.prepareStatement("UPDATE clientes SET "+columNameUpdate+" = '"+dato+"' WHERE idCliente = "+idCliente+";")) {
+            // Establecer valores en la consulta
+            if(dato.contains("nombre")){
+                sentencia.setString(1, dato);
+            }
+            if(dato.contains("num")){
+                sentencia.setInt(2, Integer.parseInt(dato));
+            }
+            if(dato.contains("calle")){
+                sentencia.setString(3, dato);
+            }
+            if(dato.contains("ciudad")){
+                sentencia.setString(4, dato);
+            }
+            if(dato.contains("cp")){
+                sentencia.setString(5, dato);
+            }
+            if(dato.contains("numcoches")){
+                sentencia.setInt(6, Integer.parseInt(dato));
+            }
+            if(dato.contains("tlf")){
+               sentencia.setArray(7, con.createArrayOf("VARCHAR", Cliente.convertirString(dato)));
+            }
+            int filasAfectadas = sentencia.executeUpdate();
+            System.out.println("Filas afectadas: " + filasAfectadas);
+            LocalConnection.closeConnection();
+            sentencia.close();
+            return filasAfectadas > 0;  // Retorna true si se actualizó al menos una fila
+        } catch (SQLException e) {
+            System.err.println("Error al ejecutar la consulta de actualización: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public static boolean borrarClientePorId(int idCliente) {
+        try (Connection con = LocalConnection.getConnection();
+             PreparedStatement sentencia = con.prepareStatement("DELETE FROM clientes WHERE idCliente = ?")) {
+            // Establecer el valor del ID en la consulta
+            sentencia.setInt(1, idCliente);
+            int filasAfectadas = sentencia.executeUpdate();
+            System.out.println("Filas afectadas: " + filasAfectadas);
+            LocalConnection.closeConnection();
+            sentencia.close();
+            return filasAfectadas > 0;  // Retorna true si se borró al menos una fila
+        } catch (SQLException e) {
+            System.err.println("Error al ejecutar la consulta de borrado: " + e.getMessage());
+            return false;
+        }
+    }
+
 }

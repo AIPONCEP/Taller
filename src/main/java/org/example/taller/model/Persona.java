@@ -12,5 +12,4 @@ public class Persona extends Direccion {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
 }
