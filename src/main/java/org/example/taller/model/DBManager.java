@@ -88,7 +88,8 @@ public class DBManager {
         return null;
     }
 
-    public static boolean insertarClientes(Cliente cliente, String nombre, Integer num, String calle, String ciudad, String cp, Integer numCoches, String tlfs) {
+    public static boolean insertarClientes(Cliente cliente) {
+
         try (Connection con = LocalConnection.getConnection();
              PreparedStatement sentencia = con.prepareStatement("INSERT INTO clientes (persona, numcoches, tlf) VALUES (ROW(?, ROW(?, ?, ?, ?)), ?, ?)")) {
 
@@ -99,7 +100,7 @@ public class DBManager {
             sentencia.setString(4, cliente.getCiudad());
             sentencia.setString(5, cliente.getCp());
             sentencia.setInt(6, cliente.getNumCoches());
-            sentencia.setArray(7, con.createArrayOf("VARCHAR", Cliente.convertirString(tlfs)));
+            sentencia.setArray(7, con.createArrayOf("VARCHAR", Cliente.convertirString(cliente.getTlfs())));
 
             int filasAfectadas = sentencia.executeUpdate();
             System.out.println("Filas afectadas: " + filasAfectadas);
@@ -163,5 +164,56 @@ public class DBManager {
             return false;
         }
     }
+
+
+    public static boolean insertarCoche(Coche coche) {
+        try (Connection con = LocalConnection.getConnection();
+            PreparedStatement sentencia = con.prepareStatement("INSERT INTO coches (matricula,marca,modelo,fichatecnica,seguro,puertas,software) VALUES (?,?,?,?,?,?,?)")) {
+
+            // Establecer valores en la consulta
+            sentencia.setString(1,coche.getMatricula());
+            sentencia.setString(2, coche.getMarca());
+            sentencia.setString(3, coche.getModelo());
+            sentencia.setString(4, coche.getFichaTecnica());
+            sentencia.setString(5, coche.getSeguro());
+            sentencia.setInt(6, coche.getPuertas());
+            sentencia.setString(7, coche.getSoftware());
+
+            int filasAfectadas = sentencia.executeUpdate();
+            System.out.println("Filas afectadas: " + filasAfectadas);
+            LocalConnection.closeConnection();
+            sentencia.close();
+            return true;
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public static boolean insertarMoto(Moto moto) {
+        try (Connection con = LocalConnection.getConnection();
+             PreparedStatement sentencia = con.prepareStatement("INSERT INTO motos (matricula,marca,modelo,fichatecnica,seguro,tiempos,maleta) VALUES (?,?,?,?,?,?,?)")) {
+
+            // Establecer valores en la consulta
+            sentencia.setString(1,moto.getMatricula());
+            sentencia.setString(2, moto.getMarca());
+            sentencia.setString(3, moto.getModelo());
+            sentencia.setString(4, moto.getFichaTecnica());
+            sentencia.setString(5, moto.getSeguro());
+            sentencia.setString(6, moto.getTiempos());
+            sentencia.setBoolean(7, moto.isMaleta());
+
+            int filasAfectadas = sentencia.executeUpdate();
+            System.out.println("Filas afectadas: " + filasAfectadas);
+            LocalConnection.closeConnection();
+            sentencia.close();
+            return true;
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+            return false;
+        }
+    }
+
+
 
 }

@@ -13,14 +13,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.example.taller.model.Cliente;
 import org.example.taller.model.DBManager;
-import org.example.taller.model.LocalConnection;
-import org.example.taller.model.Persona;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
@@ -29,6 +24,8 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+
         TableColumn<Cliente, Integer> columnId = new TableColumn<>("IdCliente");
         columnId.setCellValueFactory(new PropertyValueFactory<>("idClient"));
 
@@ -64,33 +61,26 @@ public class MainController implements Initializable {
         columNumCoches.setCellValueFactory(new PropertyValueFactory<Cliente, String>("numCoches"));
         columnTlf.setCellValueFactory(new PropertyValueFactory<Cliente,String>("tlfs"));
 
-        rellenarTabla();
+        rellenarTablaClientes();
 
         String datosMecanicos = DBManager.mostrarMecanicos();
         actualizarListView(datosMecanicos);
     }
 
     public void mostrarC(MouseEvent mouseEvent) {
-        rellenarTabla();
+        rellenarTablaClientes();
     }
     public void eliminarC(MouseEvent mouseEvent) {
         Cliente clienteSelec= (Cliente) tablaClientes.getSelectionModel().getSelectedItem();
         DBManager.borrarClientePorId(Integer.parseInt(clienteSelec.getIdClient().toString()));
     }
-    public void mostrarM(MouseEvent mouseEvent) {
-        String datosMecanicos = DBManager.mostrarMecanicos();
-        actualizarListView(datosMecanicos);
-    }
-    public void eliminarM(MouseEvent mouseEvent) {
-    }
-    public void rellenarTabla(){
+
+    public void rellenarTablaClientes(){
         ObservableList<Cliente> listObs = FXCollections.observableArrayList();
         String[] separarxguion = DBManager.mostrarClientes().split("-");
         ArrayList<Cliente> listaDatosClientes = new ArrayList<>();
         String nombre, calle,ciudad,cp,tlf;
         Integer num,numeroCoches,id;
-
-        System.out.println(DBManager.mostrarClientes());
 
         for (int i = 0; i < separarxguion.length; i++) {
             if (!separarxguion[i].contains(":")) {
@@ -115,10 +105,10 @@ public class MainController implements Initializable {
         }
         tablaClientes.setItems(listObs);
     }
+
     private void actualizarListView(String datosMecanicos) {
         ObservableList<String> listObs = FXCollections.observableArrayList();
-        // Procesa tus datos y agrega a la lista observadora
-        // Por ejemplo, asumiendo que los datos están separados por guiones y cada mecanico está en una línea
+        // Procesa los datos y agrega a la lista observable
         String[] mecanicos = datosMecanicos.split("¿");
         listObs.addAll(mecanicos);
         // Asigna la lista observadora al ListView
@@ -140,6 +130,30 @@ public class MainController implements Initializable {
     public void upClientes(MouseEvent mouseEvent) {
         try {
             Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/org/example/taller/updateView.fxml")));
+            Stage window = (Stage) tablaClientes.getScene().getWindow();
+            window.setTitle("");
+            window.setScene(scene);
+            window.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void asignarTareas(MouseEvent mouseEvent) {
+        try {
+            Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/org/example/taller/updateView.fxml")));
+            Stage window = (Stage) tablaClientes.getScene().getWindow();
+            window.setTitle("");
+            window.setScene(scene);
+            window.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addVehiculos(MouseEvent mouseEvent) {
+        try {
+            Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/org/example/taller/insertsVehiculos.fxml")));
             Stage window = (Stage) tablaClientes.getScene().getWindow();
             window.setTitle("");
             window.setScene(scene);
