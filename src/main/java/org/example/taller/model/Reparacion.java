@@ -1,5 +1,9 @@
 package org.example.taller.model;
 
+/**
+ * Clase reparación
+ * se utiliza para crear nuevas reparaciones.
+ */
 public class Reparacion {
     private Integer idServicio;
     private Integer idMecanico;
@@ -14,43 +18,33 @@ public class Reparacion {
         this.fecha = fecha;
         this.estado = estado;
     }
-
     public Integer getIdServicio() {
         return idServicio;
     }
-
     public void setIdServicio(Integer idServicio) {
         this.idServicio = idServicio;
     }
-
     public Integer getIdMecanico() {
         return idMecanico;
     }
-
     public void setIdMecanico(Integer idMecanico) {
         this.idMecanico = idMecanico;
     }
-
     public String getMatricula() {
         return matricula;
     }
-
     public void setMatricula(String matricula) {
         this.matricula = matricula;
     }
-
     public String getFecha() {
         return fecha;
     }
-
     public void setFecha(String fecha) {
         this.fecha = fecha;
     }
-
     public String getEstado() {
         return estado;
     }
-
     public void setEstado(String estado) {
         this.estado = estado;
     }

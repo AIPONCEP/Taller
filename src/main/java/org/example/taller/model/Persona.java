@@ -1,5 +1,9 @@
 package org.example.taller.model;
 
+/**
+ * Clase Persona
+ * extiended de Dirreccion
+ */
 public class Persona extends Direccion {
     private String nombre;
     public Persona(String nombre,Integer num, String calle, String ciudad, String cp) {

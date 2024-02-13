@@ -12,29 +12,29 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="566.0" prefWidth="750.0" style="-fx-background-color: lightgrey;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.taller.controller.insertsVehiculosController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="566.0" prefWidth="750.0" style="-fx-background-color: lightgrey;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.taller.controller.InsertsVehiculosController">
    <children>
-      <TextField fx:id="tFmatricula" layoutX="86.0" layoutY="132.0" prefWidth="250.0" promptText="Matrícula" style="-fx-background-color: white; -fx-border-color: grey;">
+      <TextField fx:id="tFmatricula" layoutX="87.0" layoutY="141.0" prefWidth="250.0" promptText="Matrícula" style="-fx-background-color: white; -fx-border-color: grey;">
          <font>
             <Font name="Arial" size="14.0" />
          </font>
       </TextField>
-      <TextField fx:id="tFmarca" layoutX="86.0" layoutY="169.0" prefWidth="250.0" promptText="Marca" style="-fx-background-color: white; -fx-border-color: grey;">
+      <TextField fx:id="tFmarca" layoutX="87.0" layoutY="179.0" prefWidth="250.0" promptText="Marca" style="-fx-background-color: white; -fx-border-color: grey;">
          <font>
             <Font name="Arial" size="14.0" />
          </font>
       </TextField>
-      <TextField fx:id="tFmodelo" layoutX="86.0" layoutY="207.0" prefWidth="250.0" promptText="Modelo" style="-fx-background-color: white; -fx-border-color: grey;">
+      <TextField fx:id="tFmodelo" layoutX="87.0" layoutY="217.0" prefWidth="250.0" promptText="Modelo" style="-fx-background-color: white; -fx-border-color: grey;">
          <font>
             <Font name="Arial" size="14.0" />
          </font>
       </TextField>
-      <TextField fx:id="tFfichaTecnica" layoutX="86.0" layoutY="244.0" prefWidth="250.0" promptText="Ficha técnica" style="-fx-background-color: white; -fx-border-color: grey;">
+      <TextField fx:id="tFfichaTecnica" layoutX="87.0" layoutY="254.0" prefWidth="250.0" promptText="Ficha técnica" style="-fx-background-color: white; -fx-border-color: grey;">
          <font>
             <Font name="Arial" size="14.0" />
          </font>
       </TextField>
-      <TextField fx:id="tFseguro" layoutX="86.0" layoutY="281.0" prefWidth="250.0" promptText="Seguro" style="-fx-background-color: white; -fx-border-color: grey;">
+      <TextField fx:id="tFseguro" layoutX="87.0" layoutY="291.0" prefWidth="250.0" promptText="Seguro" style="-fx-background-color: white; -fx-border-color: grey;">
          <font>
             <Font name="Arial" size="14.0" />
          </font>
@@ -44,7 +44,7 @@
             <Font name="Arial Italic" size="18.0" />
          </font>
       </Label>
-      <Button layoutX="14.0" layoutY="524.0" mnemonicParsing="false" onMouseClicked="#volver" style="-fx-background-color: white; -fx-border-color: grey;" text="Cancelar">
+      <Button layoutX="14.0" layoutY="524.0" mnemonicParsing="false" onMouseClicked="#volver" style="-fx-background-color: white; -fx-border-color: grey;" text="Volver">
          <font>
             <Font name="Arial" size="14.0" />
          </font>
@@ -54,8 +54,8 @@
             <Font name="Arial" size="14.0" />
          </font>
       </Button>
-      <ComboBox fx:id="tipoVehiculo" layoutX="86.0" layoutY="320.0" onAction="#tipoVehiculoOa" prefHeight="25.0" prefWidth="250.0" promptText="Tipo de vehículo" style="-fx-background-color: white; -fx-border-color: grey; -fx-font-size: 14; -fx-font-family: Arial;" />
-      <Pane fx:id="paneCoches" layoutX="78.0" layoutY="346.0" prefHeight="89.0" prefWidth="266.0" visible="false">
+      <ComboBox fx:id="tipoVehiculo" layoutX="87.0" layoutY="330.0" onAction="#tipoVehiculoOa" prefHeight="25.0" prefWidth="250.0" promptText="Tipo de vehículo" style="-fx-background-color: white; -fx-border-color: grey; -fx-font-size: 14; -fx-font-family: Arial;" />
+      <Pane fx:id="paneCoches" layoutX="79.0" layoutY="358.0" prefHeight="89.0" prefWidth="266.0" visible="false">
          <children>
             <TextField fx:id="tFnumPuertas" layoutX="8.0" layoutY="11.0" prefWidth="250.0" promptText="Nº de Puertas" style="-fx-background-color: white; -fx-border-color: grey;">
                <font>
@@ -69,7 +69,7 @@
             </TextField>
          </children>
       </Pane>
-      <Pane fx:id="paneMotos" layoutX="78.0" layoutY="345.0" prefHeight="89.0" prefWidth="266.0" visible="false">
+      <Pane fx:id="paneMotos" layoutX="79.0" layoutY="358.0" prefHeight="89.0" prefWidth="266.0" visible="false">
          <children>
             <ComboBox fx:id="tiempos" layoutX="8.0" layoutY="12.0" prefHeight="25.0" prefWidth="250.0" promptText="Tiempos" style="-fx-background-color: white; -fx-font-size: 14; -fx-font-family: Arial; -fx-border-color: grey;" />
             <Label layoutX="8.0" layoutY="53.0" text="Maleta:">
@@ -92,7 +92,7 @@
             </RadioButton>
          </children>
       </Pane>
-      <ImageView fitHeight="233.0" fitWidth="290.0" layoutX="382.0" layoutY="132.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="233.0" fitWidth="290.0" layoutX="378.0" layoutY="145.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@Iconos/cocheEnCamino.jpg" />
          </image>
@@ -100,5 +100,10 @@
             <InnerShadow />
          </effect>
       </ImageView>
+      <TextField fx:id="tfIdCliente" layoutX="87.0" layoutY="102.0" prefWidth="250.0" promptText="Id Cliente" style="-fx-background-color: white; -fx-border-color: grey;">
+         <font>
+            <Font name="Arial" size="14.0" />
+         </font>
+      </TextField>
    </children>
 </Pane>

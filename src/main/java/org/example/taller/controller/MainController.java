@@ -5,13 +5,11 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import org.example.taller.model.Alert;
 import org.example.taller.model.Cliente;
 import org.example.taller.model.DBManager;
 import java.io.IOException;
@@ -24,9 +22,15 @@ public class MainController implements Initializable {
     public ListView listViewMecanico;
     public TextField idMecanicoSelect;
     public static Integer idMec=0;
+
+    /**
+     * initialize
+     * Se utiliza para rellenar tabla clientes y el listview mecanicos.
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
 
         TableColumn<Cliente, Integer> columnId = new TableColumn<>("IdCliente");
         columnId.setCellValueFactory(new PropertyValueFactory<>("idClient"));
@@ -69,26 +73,49 @@ public class MainController implements Initializable {
         actualizarListView(datosMecanicos);
     }
 
+    /**
+     * Método mostrarC
+     * Se usa para refrescar la tabla clientes actualizando los datos
+     * @param mouseEvent
+     */
     public void mostrarC(MouseEvent mouseEvent) {
         rellenarTablaClientes();
     }
+
+    /**
+     * Método eliminarC
+     * Se utiliza para eliminar los clientes que se seleccionen en la tabla
+     * @param mouseEvent
+     */
     public void eliminarC(MouseEvent mouseEvent) {
-        Cliente clienteSelec= (Cliente) tablaClientes.getSelectionModel().getSelectedItem();
-        DBManager.borrarClientePorId(Integer.parseInt(clienteSelec.getIdClient().toString()));
+        Cliente clienteSelec = (Cliente) tablaClientes.getSelectionModel().getSelectedItem();
+        if (clienteSelec == null) {
+            Alert.showAlert("Advertencia", "Por favor, seleccione un cliente para eliminar.", javafx.scene.control.Alert.AlertType.WARNING);
+        } else {
+            if (Alert.showAlertConfimation("Confirmar", "¿Está seguro de eliminar el cliente?", javafx.scene.control.Alert.AlertType.CONFIRMATION)) {
+                DBManager.borrarClientePorId(Integer.parseInt(clienteSelec.getIdClient().toString()));
+            } else {
+                Alert.showAlert("Información", "Operación Cancelada", javafx.scene.control.Alert.AlertType.INFORMATION);
+            }
+        }
     }
 
+    /**
+     * Método rellenarTablaClientes
+     * se utiliza para rellenar la tabla con todos los datos de clientes...
+     */
     public void rellenarTablaClientes(){
         ObservableList<Cliente> listObs = FXCollections.observableArrayList();
         String[] separarxguion = DBManager.mostrarClientes().split("-");
         ArrayList<Cliente> listaDatosClientes = new ArrayList<>();
         String nombre, calle,ciudad,cp,tlf;
         Integer num,numeroCoches,id;
-
-
+        //se realiza tratamiento de string para poder recoger datos y asignarlos en sus correlativas columnas
         for (int i = 0; i < separarxguion.length; i++) {
             if (!separarxguion[i].contains(":")) {
                 continue;
             }
+            //lo comentado es una alternativa que funciona igual pero sin la exprecion regular.
             //if (separarxguion[i].substring(0, separarxguion[i].indexOf(":")).equals("idcliente") ||
             // separarxguion[i].substring(0, separarxguion[i].indexOf(":")).equals("\nidcliente")){
             if (separarxguion[i].matches("^idcliente:(.+)$") ||separarxguion[i].matches("^\nidcliente:(.+)$")) {
@@ -109,6 +136,11 @@ public class MainController implements Initializable {
         tablaClientes.setItems(listObs);
     }
 
+    /**
+     * Método actualizarListView
+     * este método se utiliza para poder pasar los datos al listview
+     * @param datosMecanicos
+     */
     private void actualizarListView(String datosMecanicos) {
         ObservableList<String> listObs = FXCollections.observableArrayList();
         // Procesa los datos y agrega a la lista observable
@@ -142,18 +174,37 @@ public class MainController implements Initializable {
         }
     }
 
+    /**
+     * Método asignarTareas
+     * Se utiliza para cambiar de vista y pasar el id del mecánico que corresponda
+     * mediante la utilización de la variable idMec y asi asignarle después las tareas.
+     * @param mouseEvent
+     */
     public void asignarTareas(MouseEvent mouseEvent) {
-        idMec= Integer.valueOf(idMecanicoSelect.getText());
-        if(idMec!=0){
-            try {
-                Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/org/example/taller/addTasks-view.fxml")));
-                Stage window = (Stage) tablaClientes.getScene().getWindow();
-                window.setTitle("");
-                window.setScene(scene);
-                window.show();
-            } catch (IOException e) {
-                e.printStackTrace();
+        //Se comprueba que el textfield no este vacio
+        if (!idMecanicoSelect.getText().isEmpty()) {
+            //Se asigna el valor a la variable idMec convirtiendo a entero
+            idMec = Integer.valueOf(idMecanicoSelect.getText());
+            //Se comprueba que no sea 0 idMec
+            if(idMec!=0){
+                //Se verifica que el mécanico existe
+                if(DBManager.verificarExistenciaMecanico(idMec)){
+                    try {
+                        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/org/example/taller/addTasks-view.fxml")));
+                        Stage window = (Stage) tablaClientes.getScene().getWindow();
+                        window.setTitle("");
+                        window.setScene(scene);
+                        window.show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }else{
+                    Alert.showAlert("Error","El Id introducido no se corresponde con ninguno registrado para los mécanicos de la base de datos", javafx.scene.control.Alert.AlertType.ERROR);
+                }
             }
+        } else {
+            // Maneja el error en el caso de que el campo esté vacío
+            Alert.showAlert("Error","Debe indicar el id del mecánico para asignarle las tareas", javafx.scene.control.Alert.AlertType.ERROR);
         }
     }
 

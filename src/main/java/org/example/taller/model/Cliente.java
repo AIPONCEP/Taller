@@ -1,8 +1,11 @@
 package org.example.taller.model;
 
-import java.sql.ResultSet;
 import java.util.Arrays;
 
+/**
+ * Clase Cliente
+ * Se utiliza para crear nuevos clientes extiende de persona
+ */
 public class Cliente extends Persona {
     private Integer idClient;
     private String tlfs;

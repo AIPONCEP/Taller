@@ -1,7 +1,7 @@
 -- DROP DATABASE IF EXISTS "Taller";
 
-CREATE DATABASE "Taller"
-    WITH
+create DATABASE "Taller"
+    with
     OWNER = postgres
     ENCODING = 'UTF8'
     LC_COLLATE = 'Spanish_Spain.1252'
@@ -28,7 +28,7 @@ select nextval ('sec_identificador');
 
 --Creamos un objeto.........create type "objeto"
 -- Si no pones al char varying un valor max se pone el valor max del tipo de dato
--- Si al char no le ponemos el tamaño el max es 1 asi q ¡ojoo!
+-- Si al char no le ponemos el tamaño el max es 1.
 -- En un objeto NO SE PUEDE PONER PRIMARY KEY
 -- Los objetos se ven en Schemas/Types
 -- El varchar se lo traga pero no existe en pgadmin
@@ -68,7 +68,6 @@ create type empleados_type as(
 	NUSS bigint
 );
 
-
 ------------------------Tabla administradores-------------------------
 
 --Para usar la secuencia que hemos creado hay q usar el
@@ -101,8 +100,8 @@ create table mecanicos(
 
 create table vehiculos(
 	matricula char varying(7) primary key,
-	marca char varying(10),
-	modelo char varying(10),
+	marca char varying(20),
+	modelo char varying(20),
 	fichaTecnica char varying(100),
 	seguro char varying(50)
 );
@@ -168,7 +167,7 @@ create table reparaciones(
 	foreign key (matricula) references vehiculos(matricula)
 );
 
--------------------------------------------------------------
+--------------------Ejemplos para Select y Update en tablas----------------------
 
 --Para ver solo los vehiculos
 --select * from only vehiculos;
@@ -182,7 +181,6 @@ create table reparaciones(
 --update clientes set tlf=array_append(tlf,'222222222') where idCliente=1;
 
 --ALTER TYPE public.direccion_type ALTER ATTRIBUTE calle SET DATA TYPE character varying(25);
-
 
 ----------------------Funciones-------------------------------
 
@@ -237,7 +235,7 @@ create function limitadorPrecios(idServ integer, incremento double precision) re
 	end
 $$ language plpgsql;
 
------------------------fun Para casa-----------------------------
+----------------------fun reiniciar horas----------------------------
 
 -- Reiniciar el num de horas de los mecánicos
 
@@ -254,7 +252,7 @@ $$ language plpgsql;
 -- mostrar contenido de un enum
 select enum_range(null::especialidad);
 
-----------------------------------------------------------------------
+----------------------------fun listar reparaciones------------------------------
 
 --Listar reparaciones de un mecánico dado un id
 /*
@@ -288,38 +286,47 @@ begin
 end
 $$ language plpgsql;
 
-
 --select listarReparaciones(23);
 --select reparaciones.matricula, servicios.descripcion, reparaciones.idmecanico
 	--from reparaciones inner join servicios on reparaciones.idservicio= servicios.idservicio;
-----------------------------------------------------------------------------------
 
-/* Ejemplo de tigger creado para actualizar en una table padre antes de insertar en su hijo datos nuevos
-CREATE OR REPLACE FUNCTION before_insert_empleado()
-RETURNS TRIGGER AS $$
-BEGIN
-    INSERT INTO persona(nombre, edad) VALUES (NEW.nombre, NEW.edad);
-    RETURN NEW;
-END;
+
+---------------fun calcular coste reparación-------------------
+
+-- Calcular el costo total de la reparación
+
+create or replace function calcularCostoReparacion(idServ integer) RETURNS double precision as $$
+DECLARE
+    totalCosto double precision := 0;
+begin
+    select sum(servicios.costo) into totalCosto
+    from reparaciones
+    inner join servicios on reparaciones.idServicio = servicios.idServicios
+    where reparaciones.idServicio = idServ;
+
+    return totalCosto;
+end;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER before_insert_empleado_trigger
-BEFORE INSERT ON empleado
-FOR EACH ROW
-EXECUTE FUNCTION before_insert_empleado();
-*/
+-- select calcularCostoReparacion(1);
 
-CREATE OR REPLACE FUNCTION insertarVehiculos()
-RETURNS TRIGGER AS $$
-BEGIN
-    INSERT INTO vehiculos VALUES (NEW.matricula,NEW.marca,NEW.modelo,NEW.fichatecnica,NEW.seguro);
-    RETURN NEW;
-END;
+-------------------------------Triggers-------------------------------------
+
+-- Tigger para insertar en vehiculos antes de insertar en su coches o motos
+
+create or replace function insertarVehiculos()
+RETURNS trigger AS $$
+begin
+    insert into vehiculos values (NEW.matricula,NEW.marca,NEW.modelo,NEW.fichatecnica,NEW.seguro);
+    return new;
+end;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER trigger_bi_coches BEFORE INSERT ON coches FOR EACH ROW EXECUTE FUNCTION insertarVehiculos();
+create trigger trigger_bi_coches before insert on coches for each row EXECUTE function insertarVehiculos();
+create trigger trigger_bi_motos before insert on motos for each row EXECUTE function insertarVehiculos();
 
-----------------------------------------------------------------------
+----------------Fun horasPendientes-----------------------
+
 -- Calcular las horas pendientes (por trabajar) a un mecánico en función del servicio de reparación
 
 create or replace function horasPendientes(codServicio integer, codMecanico integer) returns integer as $$
@@ -336,17 +343,24 @@ create or replace function horasPendientes(codServicio integer, codMecanico inte
 	end;
 $$ language plpgsql;
 
---select * from mecanicos;
+--select horasPendientes(1,23);
 
--------------------------------------------------------------
+CREATE OR REPLACE FUNCTION horas_pendientes_total(cod_mecanico integer) RETURNS integer AS $$
+DECLARE
+    total_horas_pendientes integer := 0;
+BEGIN
+    SELECT SUM(tiempo) INTO total_horas_pendientes
+    FROM servicios
+    WHERE idservicios IN (SELECT idservicio FROM reparaciones WHERE idmecanico = cod_mecanico);
 
--- Calcular el costo total de la reparación
+    RETURN total_horas_pendientes;
+END;
+$$ LANGUAGE plpgsql;
+
+select horas_pendientes_total(23);
 
 
-
-
-
-------------------------Trigger-------------------------------
+------------------Trigger actualizar nombre clientes------------------------
 
 -- IMPORTANTE: No se puede ejecutar el cuerpo un trigger directamente hay que
 -- programar previamente el contenido con una funcion.
@@ -365,7 +379,7 @@ $$ language plpgsql;
 create or replace trigger triggerActualizarNombresClientes before insert or update
 on clientes for each row execute function funActualizarNombreClientes();
 
--------------------------------------------------------------------
+----------------------Trigger actualizarCoches------------------------
 
 -- Cuando se registre un coche de un cliente, el atributo num_vehiculos (derivado) debe incrementarse.
 
@@ -380,37 +394,52 @@ create or replace trigger trigger_bi_actualizarCoches before insert on clientes_
 for each row execute function actualizarCoches();
 
 ----------------------Inserts-----------------------------
-Select * from clientes_vehiculos;
+
 Select * from clientes;
-insert into clientes(persona,numcoches, tlf) values (('Pepa', (27,'Bravo Murillo','Las Palmas de GC','35016')),1,'{"+34928457817"}');
-insert into clientes(persona,numcoches, tlf) values (('Pepe', (27,'Bravo Murillo','Las Palmas de GC','35016')),1,'{"+34928457817"}');
-insert into clientes(persona,numcoches, tlf) values (('María', (14,'Aconcagua','Las Palmas de GC','35016')),2,'{"+34828336220"}');
-insert into clientes(persona,numcoches, tlf) values (('Ana', (15,'Caroni','Las Palmas de GC','35016')),1,'{"+34928418775","+34658866970"}');
-
-Select * from motos;
-
-Select * from coches;
-insert into coches values ('1981GYK','Mazda', '2', 'rutaficha', 'Mafre', '5','GPS Integrado');
-insert into coches values ('1888DFZ','Citroen', 'Berlingo', 'rutaficha', 'Mafre', '5','GPS Integrado');
+insert into clientes(persona,numcoches, tlf) values (('Pepa', (27,'Bravo Murillo','Las Palmas de GC','35016')),0,'{"+34928457817"}');
+insert into clientes(persona,numcoches, tlf) values (('Pepe', (27,'Bravo Murillo','Las Palmas de GC','35016')),0,'{"+34928457817"}');
+insert into clientes(persona,numcoches, tlf) values (('María', (14,'Aconcagua','Las Palmas de GC','35016')),0,'{"+34828336220"}');
+insert into clientes(persona,numcoches, tlf) values (('Ana', (15,'Caroni','Las Palmas de GC','35016')),0,'{"+34928418775","+34658866970"}');
 
 Select * from vehiculos;
 
+Select * from motos;
+insert into motos (matricula, marca, modelo, fichaTecnica, seguro, tiempos, maleta)
+values
+    ('2452ABC', 'Honda', 'CBR600RR', 'Rutaficha', 'Generali', '4T', true),
+    ('5878DEF', 'Kawasaki', 'Ninja ZX-10R', 'Rutaficha', 'Mafre', '4T', false);
+
+Select * from coches;
+insert into coches
+values
+('1981GYK','Mazda', '2', 'rutaficha', 'Mafre', '5','GPS Integrado'),
+ ('1888DFZ','Citroen', 'Berlingo', 'rutaficha', 'Mafre', '5','GPS Integrado');
+
+Select * from clientes_vehiculos;
+insert into clientes_vehiculos values('1981GYK',1),('1888DFZ',2),('2452ABC',3),('5878DEF',4);
+
 Select * from servicios;
-insert into servicios (descripcion, costo, tiempo) values('Cambio de ruedas', 30.00, 02.00);
-insert into servicios (descripcion, costo, tiempo) values('Cambio de aceite', 15.00, 01.00);
+insert into servicios (descripcion, costo, tiempo)
+values
+('Cambio de ruedas', 30.00, 02.00),
+('Cambio de aceite', 15.00, 01.00),
+('Reparación de frenos', 50.00, 02.30),
+('Alineación y balanceo', 40.00, 01.15),
+('Cambio de filtro de aire', 10.00, 00.30),
+('Recarga de aire acondicionado', 25.00, 01.00);
 
 Select * from mecanicos;
 Insert into mecanicos(rol,conthoras,seguro,empleados) values
-('chapista',8,'A todo riesgo',
+('chapista',0,'A todo riesgo',
  row(('Manolo',row(17,'San Nicolás','Las Palmas',35021)),
 	 '321','rutaNominaManolo','2024/05/02'::date,123456789101113));
 
 Insert into mecanicos(rol,conthoras,seguro,empleados) values
-('soldador',8,'A todo riesgo',
+('soldador',0,'A todo riesgo',
  row(('Luis',row(11,'Amazonas','Las Palmas',35014)),
 	 '123','rutaNominaLuis','2024/05/02'::date,321456784101214));
 
-select enum_range(null::especialidad);
+-- select enum_range(null::especialidad);
 
 Select * from reparaciones;
 insert into reparaciones values(1,23,'1981GYK','2024\02\23','Noinit');

@@ -1,5 +1,8 @@
 package org.example.taller.model;
-
+/**
+ * Clase Coche
+ * Se utiliza para crear nuevos coches extiende de vehiculo
+ */
 public class Coche  extends Vehiculo{
 
     private Integer puertas;

@@ -1,5 +1,8 @@
 package org.example.taller.model;
-
+/**
+ * Clase Moto
+ * Se utiliza para crear nuevas motos extiende de vehiculo
+ */
 public class Moto extends Vehiculo {
 
     private String tiempos;
