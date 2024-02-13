@@ -57,7 +57,7 @@
             <Font name="Calibri Italic" size="18.0" />
          </font>
       </Label>
-      <Button layoutX="14.0" layoutY="516.0" mnemonicParsing="false" onMouseClicked="#volver" style="-fx-background-color: white; -fx-border-color: grey;" text="Cancelar">
+      <Button layoutX="14.0" layoutY="516.0" mnemonicParsing="false" onMouseClicked="#volver" style="-fx-background-color: white; -fx-border-color: grey;" text="Volver">
          <font>
             <Font name="Calibri" size="18.0" />
          </font>
