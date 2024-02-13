@@ -26,22 +26,11 @@ public class insertsController {
                 Integer.parseInt(tFnumc.getText()),tFtlf.getText()
         );
         DBManager.insertarClientes(cliente);
+
     }
     public void volver(MouseEvent mouseEvent) {
         try {
-            Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/org/example/taller/Main-view.fxml")));
-            Stage window = (Stage) tFnombre.getScene().getWindow();
-            window.setTitle("");
-            window.setScene(scene);
-            window.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void registrarCoche(MouseEvent mouseEvent) {
-        try {
-            Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/org/example/taller/insertsVehiculos.fxml")));
+            Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/org/example/taller/main-view.fxml")));
             Stage window = (Stage) tFnombre.getScene().getWindow();
             window.setTitle("");
             window.setScene(scene);

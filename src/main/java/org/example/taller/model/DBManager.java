@@ -192,7 +192,7 @@ public class DBManager {
 
     public static boolean insertarMoto(Moto moto) {
         try (Connection con = LocalConnection.getConnection();
-             PreparedStatement sentencia = con.prepareStatement("INSERT INTO motos (matricula,marca,modelo,fichatecnica,seguro,tiempos,maleta) VALUES (?,?,?,?,?,?,?)")) {
+             PreparedStatement sentencia = con.prepareStatement("INSERT INTO motos (matricula,marca,modelo,fichatecnica,seguro,tiempos,maleta) VALUES (?,?,?,?,?,?::tiemposmotos,?)")) {
 
             // Establecer valores en la consulta
             sentencia.setString(1,moto.getMatricula());
@@ -206,7 +206,81 @@ public class DBManager {
             int filasAfectadas = sentencia.executeUpdate();
             System.out.println("Filas afectadas: " + filasAfectadas);
             LocalConnection.closeConnection();
-            sentencia.close();
+            return true;
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public static String mostrarServicios() {
+        con = LocalConnection.getConnection();
+        if (con != null) {
+            try {
+                sentencia = con.prepareStatement("Select * from servicios;");
+                resultado = sentencia.executeQuery();
+                ResultSetMetaData metaData = resultado.getMetaData();
+                int columnCount = metaData.getColumnCount();
+                StringBuilder result = new StringBuilder();
+                while (resultado.next()) {
+                    StringBuilder row = new StringBuilder();
+                    for (int i = 1; i <= columnCount; i++) {
+                        String columnName = metaData.getColumnName(i);
+                        Object value = resultado.getObject(columnName);
+                        row.append(columnName).append(": ").append(value).append("¿");
+                    }
+                    result.append(row).append("\n");
+                }
+                LocalConnection.closeConnection();
+                sentencia.close();
+                return result.toString();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return null;
+    }
+
+    public static String listarReparaciones(Integer id) {
+        con = LocalConnection.getConnection();
+        if (con != null) {
+            try {
+                sentencia = con.prepareStatement("select listarReparaciones("+id+");");
+                resultado = sentencia.executeQuery();
+                ResultSetMetaData metaData = resultado.getMetaData();
+                int columnCount = metaData.getColumnCount();
+                StringBuilder result = new StringBuilder();
+                while (resultado.next()) {
+                    StringBuilder row = new StringBuilder();
+                    for (int i = 1; i <= columnCount; i++) {
+                        String columnName = metaData.getColumnName(i);
+                        Object value = resultado.getObject(columnName);
+                        row.append(value).append("¿");
+                    }
+                    result.append(row).append("\n");
+                }
+                LocalConnection.closeConnection();
+                sentencia.close();
+                return result.toString();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return null;
+    }
+
+    public static boolean asignarNuevaReparacion(Reparacion reparacion) {
+        try (Connection con = LocalConnection.getConnection();
+            PreparedStatement sentencia = con.prepareStatement("INSERT INTO reparaciones (idservicio,idmecanico,matricula,fecha,estado) VALUES (?,?,?,?::date,?)")) {
+            // Establecer valores en la consulta
+            sentencia.setInt(1,reparacion.getIdServicio());
+            sentencia.setInt(2, reparacion.getIdMecanico());
+            sentencia.setString(3, reparacion.getMatricula());
+            sentencia.setString(4, reparacion.getFecha());
+            sentencia.setString(5, reparacion.getEstado());
+            int filasAfectadas = sentencia.executeUpdate();
+            System.out.println("Filas afectadas: " + filasAfectadas);
+            LocalConnection.closeConnection();
             return true;
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());

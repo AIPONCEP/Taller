@@ -21,7 +21,7 @@ public class updateDatosController {
 
     public void volver(MouseEvent mouseEvent) {
         try {
-            Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/org/example/taller/Main-view.fxml")));
+            Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/org/example/taller/main-view.fxml")));
             Stage window = (Stage) tFnombre.getScene().getWindow();
             window.setTitle("");
             window.setScene(scene);

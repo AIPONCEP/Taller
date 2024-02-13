@@ -1,6 +1,4 @@
--- Database: Taller2
-
--- DROP DATABASE IF EXISTS "Taller2";
+-- DROP DATABASE IF EXISTS "Taller";
 
 CREATE DATABASE "Taller"
     WITH
@@ -39,7 +37,7 @@ create type direccion_type as(
 	num integer,
 	calle char varying(50),
 	ciudad char varying(50),
-	cp char(5)
+	cp char varying(5)
 );
 
 --------------------------Type Persona--------------------------
@@ -57,7 +55,7 @@ create table clientes(
 	idCliente serial primary key,
 	persona persona_type,
 	numCoches Integer default 0,
-	tlf char(12)[]
+	tlf char varying(14)[]
 );
 
 --------------------------Type empleados---------------------------
@@ -65,7 +63,7 @@ create table clientes(
 create type empleados_type as(
 	persona persona_type,
 	pass char varying(50),
-	nomina char(20),
+	nomina char varying(20),
 	horario date,
 	NUSS bigint
 );
@@ -81,7 +79,7 @@ create table administradores(
 	idAdmin integer primary key default nextval('sec_identificador'),
 	edad integer,
 	fechaNac date,
-	tlfCorporativo char(12),
+	tlfCorporativo char varying(12),
 	empleados empleados_type
 );
 
@@ -103,8 +101,8 @@ create table mecanicos(
 
 create table vehiculos(
 	matricula char varying(7) primary key,
-	marca char(10),
-	modelo char(10),
+	marca char varying(10),
+	modelo char varying(10),
 	fichaTecnica char varying(100),
 	seguro char varying(50)
 );
@@ -259,8 +257,8 @@ select enum_range(null::especialidad);
 ----------------------------------------------------------------------
 
 --Listar reparaciones de un mecánico dado un id
-
---select * from only reparaciones;
+/*
+select * from only reparaciones;
 
 create or replace function listarReparaciones(idTrabajador integer) returns text as $$
 	declare resultado text;
@@ -270,6 +268,26 @@ create or replace function listarReparaciones(idTrabajador integer) returns text
 		return resultado;
 	end
 $$ language plpgsql;
+*/
+
+create or replace function listarReparaciones(idTrabajador integer)
+returns text as $$
+declare
+    resultado text := '';
+    registro record;
+begin
+    for registro in
+        select idServicio, array_to_string(array_agg(matricula), ',') as matriculas
+        from reparaciones
+        where idmecanico = idTrabajador
+        group by idServicio
+    loop
+        resultado := resultado || 'ID Servicio: ' || registro.idServicio || ', Matriculas: ' || registro.matriculas || E'\n';
+    end loop;
+    return resultado;
+end
+$$ language plpgsql;
+
 
 --select listarReparaciones(23);
 --select reparaciones.matricula, servicios.descripcion, reparaciones.idmecanico
@@ -362,12 +380,14 @@ create or replace trigger trigger_bi_actualizarCoches before insert on clientes_
 for each row execute function actualizarCoches();
 
 ----------------------Inserts-----------------------------
-
+Select * from clientes_vehiculos;
 Select * from clientes;
 insert into clientes(persona,numcoches, tlf) values (('Pepa', (27,'Bravo Murillo','Las Palmas de GC','35016')),1,'{"+34928457817"}');
 insert into clientes(persona,numcoches, tlf) values (('Pepe', (27,'Bravo Murillo','Las Palmas de GC','35016')),1,'{"+34928457817"}');
 insert into clientes(persona,numcoches, tlf) values (('María', (14,'Aconcagua','Las Palmas de GC','35016')),2,'{"+34828336220"}');
 insert into clientes(persona,numcoches, tlf) values (('Ana', (15,'Caroni','Las Palmas de GC','35016')),1,'{"+34928418775","+34658866970"}');
+
+Select * from motos;
 
 Select * from coches;
 insert into coches values ('1981GYK','Mazda', '2', 'rutaficha', 'Mafre', '5','GPS Integrado');

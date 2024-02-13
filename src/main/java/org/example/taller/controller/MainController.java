@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -21,7 +22,8 @@ import java.util.ResourceBundle;
 public class MainController implements Initializable {
     public TableView tablaClientes;
     public ListView listViewMecanico;
-
+    public TextField idMecanicoSelect;
+    public static Integer idMec=0;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -82,6 +84,7 @@ public class MainController implements Initializable {
         String nombre, calle,ciudad,cp,tlf;
         Integer num,numeroCoches,id;
 
+
         for (int i = 0; i < separarxguion.length; i++) {
             if (!separarxguion[i].contains(":")) {
                 continue;
@@ -140,20 +143,23 @@ public class MainController implements Initializable {
     }
 
     public void asignarTareas(MouseEvent mouseEvent) {
-        try {
-            Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/org/example/taller/updateView.fxml")));
-            Stage window = (Stage) tablaClientes.getScene().getWindow();
-            window.setTitle("");
-            window.setScene(scene);
-            window.show();
-        } catch (IOException e) {
-            e.printStackTrace();
+        idMec= Integer.valueOf(idMecanicoSelect.getText());
+        if(idMec!=0){
+            try {
+                Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/org/example/taller/addTasks-view.fxml")));
+                Stage window = (Stage) tablaClientes.getScene().getWindow();
+                window.setTitle("");
+                window.setScene(scene);
+                window.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public void addVehiculos(MouseEvent mouseEvent) {
         try {
-            Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/org/example/taller/insertsVehiculos.fxml")));
+            Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/org/example/taller/insertsVehiculos-view.fxml")));
             Stage window = (Stage) tablaClientes.getScene().getWindow();
             window.setTitle("");
             window.setScene(scene);

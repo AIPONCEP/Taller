@@ -62,11 +62,6 @@
             <Font name="Arial" size="14.0" />
          </font>
       </Button>
-      <Button layoutX="520.0" layoutY="524.0" mnemonicParsing="false" onMouseClicked="#registrarCoche" style="-fx-background-color: white; -fx-border-color: grey;" text="Registrar Vehículo">
-         <font>
-            <Font name="Arial" size="14.0" />
-         </font>
-      </Button>
       <ImageView fitHeight="288.0" fitWidth="296.0" layoutX="89.0" layoutY="142.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@Iconos/moto.jpg" />

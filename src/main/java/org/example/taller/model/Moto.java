@@ -1,6 +1,6 @@
 package org.example.taller.model;
 
-public class Moto extends Vehiculo{
+public class Moto extends Vehiculo {
 
     private String tiempos;
     private boolean maleta;
